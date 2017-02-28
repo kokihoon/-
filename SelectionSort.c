@@ -6,6 +6,8 @@ void BubbleSort(int values[], int count);
 void quickSort(int values[], int start, int end);
 int partitionQuickSort(int values[], int start, int end);
 void insertionSort(int values[], int count);
+void shellInsertionSort(int value[], int start, int end, int interval);
+void shellSort(int value[], int count);
 
 int partitionQuickSort(int values[], int start, int end) {
 	int pivot = 0;
@@ -50,7 +52,8 @@ void main() {
 	//selectionSort(values, 8);
 	//BubbleSort(values, 8);
 	//quickSort(values, 0, 7);
-	insertionSort(values, 8);
+	//insertionSort(values, 8);
+	shellSort(values, 8);
 	printf("\nAfter Sort\n");
 	printArray(values, 8);
 
@@ -116,8 +119,39 @@ void selectionSort(int values[], int count) {
 		printArray(values, count);
 
 	}
-
 }
+void shellSort(int value[], int count) {
+	int i = 0, interval = 0;
+
+	interval = count / 2;
+
+	while(interval >= 1) {
+		for (i = 0; i < interval; i++) {
+			shellInsertionSort(value, i, count - 1, interval);
+		}
+		printf("Interval-%d, ", interval);
+		printArray(value, count);
+		interval /= 2;
+	}
+}
+
+void shellInsertionSort(int value[], int start, int end, int interval) {
+	int i = 0;
+	int item = 0, index = 0;
+
+	for (i = start + interval; i <= end; i = i + interval) {
+		item = value[i];
+		index = i - interval;
+
+		while ((index >= start) && item < value[index]) {
+			value[index + interval] = value[index];
+			index = index - interval;
+		}
+
+		value[index + interval] = item;
+	}
+}
+
 void printArray(int values[], int count) {
 	for (int i = 0; i < count; i++) {
 		printf("%d ", values[i]);
